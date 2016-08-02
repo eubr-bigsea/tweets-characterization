@@ -53,9 +53,9 @@ class Stats:
         # Reads every profile and its city while prepares the statistic for tweets, retweets and mentions
         with open(list_of_profiles_file, 'r') as f:
             profiles = f.read().split('\n')
-        for k in profiles:
-            profile = k.split()[0]
-            city = ''.join(k.split()[1:])
+        for line in profiles:
+            profile = line.split()[0]
+            city = ''.join(line.split()[1:])
             self.list_of_profiles[profile] = {}
             self.list_of_profiles[profile]['city'] = city
             self.list_of_profiles[profile]['stats'] = {}
@@ -122,6 +122,11 @@ class Stats:
                 return True
         return False
 
+    '''
+    Get the top 10 profiles with the most tweets + retweets + mentions
+    '''
+    def get_most_popular_profiles(self):
+        return sorted(self.list_of_profiles.iteritems(), key=lambda (k,v): (v['stats']['tweets'] + v['stats']['mentions'] + v['stats']['retweets'],k))[-10:]
     
     '''
     Compute the statistic
@@ -242,18 +247,18 @@ class Stats:
         print "------------------------------------------------"
         print "-Top 10 Target Profiles-------------------------"
         print "------------------------------------------------"
-        for key, value in sorted(self.list_of_profiles.iteritems(), key=lambda (k,v): (v['stats']['tweets'] + v['stats']['mentions'] + v['stats']['retweets'],k))[-10:]:
-            print key, value['stats']['tweets'], value['stats']['mentions'], value['stats']['retweets']
+        for profile, stats in self.get_most_popular_profiles():
+            print profile, stats['stats']['tweets'], stats['stats']['mentions'], stats['stats']['retweets']
         print "------------------------------------------------"
         print "-Top 10 Hashtags -------------------------------"
         print "------------------------------------------------"
-        for k,v in self.hashtag_stats[-10:]:
-            print k,v
+        for hashtag,amount in self.hashtag_stats[-10:]:
+            print hashtag,amount
         print "------------------------------------------------"
         print "-Top 10 Keywords -------------------------------"
         print "------------------------------------------------"
-        for k,v in self.keywords_stats[-10:]:
-            print k,v
+        for keyword,amount in self.keywords_stats[-10:]:
+            print keyword,amount
         print "------------------------------------------------"
 
 if ( __name__ == "__main__" ):
