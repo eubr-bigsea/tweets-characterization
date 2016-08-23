@@ -119,6 +119,7 @@ if ( __name__ == "__main__" ):
     # Format the date
     fmt = '%Y-%m-%d %H:%M:%S'
 
+    # UTC tzinfo=pytz.utc
     # -03:06 hours the timezone of Sao Paulo
     # gmz_tz = pytz.timezone('America/Sao_Paulo')
     gmt_tz = pytz.timezone('Etc/GMT+3')

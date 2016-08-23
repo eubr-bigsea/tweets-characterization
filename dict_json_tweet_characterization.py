@@ -18,6 +18,7 @@ import time
 import argparse
 import re
 import csv
+from collections import OrderedDict
 
 # THIS CODE ENSURE THE CORRECT ENCODING (OPTIONAL)
 reload(sys)
@@ -173,7 +174,7 @@ if ( __name__ == "__main__" ):
     if(city_name in top_cities):
         # Load a dictionary of the selected city
         # arq = open(output_information+"_"+city_name+'.txt', 'a+')
-        users_file_csv = "tweets_characterization/cities_csv/"+city_name+".csv"
+        users_file_csv = "cities_csv/"+city_name+".csv"
         # csv reader from userid/username file
         reader = csv.reader(open(users_file_csv, 'r'))
         
@@ -201,16 +202,27 @@ if ( __name__ == "__main__" ):
         print "Time to retrievel characterization # retweets: ", stoptime-startime
         
         # Save the results
-        arq = open(output_information+"_"+city_name+".txt", "a+")
-        arq.write("User ID/NAME \t # Tweets \t # Mentions \t # Retweets \n")
-        for rows in dict_userid_name:
-            arq.write("@"+dict_userid_name[rows]+ "\t"+ str(dict_userid_count[rows]) + "\t"+ str(dict_userid_mention[rows]) +"\t"+ str(dict_userid_retweet[rows])+ "\n")
-            #print "@"+dict_userid_name[rows], dict_userid_count[rows],  dict_userid_mention[rows], dict_userid_retweet[rows]
-        arq.close()
+        json_output = []
+        # dict_test = {}
+        # Open file to stored the characterization
+        with open(output_information+"_"+city_name+".json", 'w') as fp:
+            for rows in dict_userid_name:
+            	# dict_test.OrderedDict()
+            	dict_output = {"name_": dict_userid_name[rows], "num_tweets": dict_userid_count[rows], "num_mentions": dict_userid_mention[rows], "num_retweets": dict_userid_retweet[rows]} 
+                json_output.append(dict_output)
+            # print json_output
+            json.dump(json_output,fp)
+        # OUTPUT in TXT
+        # arq = open(output_information+"_"+city_name+".txt", "a+")
+        # arq.write("User ID/NAME \t # Tweets \t # Mentions \t # Retweets \n")
+        # for rows in dict_userid_name:
+        #     arq.write("@"+dict_userid_name[rows]+ "\t"+ str(dict_userid_count[rows]) + "\t"+ str(dict_userid_mention[rows]) +"\t"+ str(dict_userid_retweet[rows])+ "\n")
+        #     #print "@"+dict_userid_name[rows], dict_userid_count[rows],  dict_userid_mention[rows], dict_userid_retweet[rows]
+        # arq.close()
        
     elif (city_name == "all"):
         # Open csv file
-        users_file_csv = "tweets_characterization/cities_csv/users_id_name.csv"
+        users_file_csv = "cities_csv/users_id_name.csv"
         # csv reader from userid/username file
         reader = csv.reader(open(users_file_csv, 'r'))
 
@@ -227,13 +239,24 @@ if ( __name__ == "__main__" ):
         operations_dict_tweets_all(database,output_information, city_name, dict_userid_count, dict_userid_retweet, dict_userid_mention)
         stoptime = time.time()
         print "Time to retrievel characterization # tweets: ", stoptime-startime
-        # Open file to stored the characterization
-        arq = open(output_information+"all.txt", "a+")
-        arq.write("User ID/NAME \t # Tweets \t # Mentions \t # Retweets \n")
-        for rows in dict_userid_name:
-            arq.write("@"+dict_userid_name[rows]+ "\t"+ str(dict_userid_count[rows]) + "\t"+ str(dict_userid_mention[rows]) +"\t"+ str(dict_userid_retweet[rows])+ "\n")
-            #print "@"+dict_userid_name[rows], dict_userid_count[rows],  dict_userid_mention[rows], dict_userid_retweet[rows]
-        arq.close()
 
+        json_output = []
+        # dict_test = {}
+        # Open file to stored the characterization
+        with open(output_information+'.json', 'w') as fp:
+            for rows in dict_userid_name:
+            	# dict_test.OrderedDict()
+            	dict_output = {"name_": dict_userid_name[rows], "num_tweets": dict_userid_count[rows], "num_mentions": dict_userid_mention[rows], "num_retweets": dict_userid_retweet[rows]} 
+                json_output.append(dict_output)
+            # print json_output
+            json.dump(json_output,fp)
+
+        # OUTPUT in TXT
+        # arq = open(output_information+"all.txt", "a+")
+        # arq.write("User ID/NAME \t # Tweets \t # Mentions \t # Retweets \n")
+        # for rows in dict_userid_name:
+            # arq.write("@"+dict_userid_name[rows]+ "\t"+ str(dict_userid_count[rows]) + "\t"+ str(dict_userid_mention[rows]) +"\t"+ str(dict_userid_retweet[rows])+ "\n")
+            #print "@"+dict_userid_name[rows], dict_userid_count[rows],  dict_userid_mention[rows], dict_userid_retweet[rows]
+        # arq.close()
     else:
         print "@@@ choose a existent option for the city (-c) parameter"
