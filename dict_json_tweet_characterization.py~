@@ -246,7 +246,7 @@ if ( __name__ == "__main__" ):
         with open(output_information+'.json', 'w') as fp:
             for rows in dict_userid_name:
             	# dict_test.OrderedDict()
-            	dict_output = {"name_": dict_userid_name[rows], "num_tweets": dict_userid_count[rows], "num_mentions": dict_userid_mention[rows], "num_retweets": dict_userid_retweet[rows]} 
+            	dict_output = {"name_": dict_userid_name[rows], "nuem_tweets": dict_userid_count[rows], "num_mentions": dict_userid_mention[rows], "num_retweets": dict_userid_retweet[rows]} 
                 json_output.append(dict_output)
             # print json_output
             json.dump(json_output,fp)

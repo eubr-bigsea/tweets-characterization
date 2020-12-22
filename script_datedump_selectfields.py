@@ -88,7 +88,7 @@ def operations_dates(records, paths, output_file):
     # Save the results
     # Colocar a data do dump no arquivo
     # http://stackoverflow.com/questions/11280382/python-mongodb-pymongo-json-encoding-and-decoding
-    arq = open(output_file, "a+")
+    arq = open(output_file, "w")
     for record in records:
         # print record['human_date']
         output_filter = dict_find(paths, record)
